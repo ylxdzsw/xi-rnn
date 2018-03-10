@@ -42,15 +42,15 @@ function predict(model, V)
     println()
 end
 
-@main function main(model; epoch::Int=50)
+@main function main(modelname; epoch::Int=50)
     data, V = get_data()
-    model = pyimport(model)[:Model](length(V), "gpu")
+    model = pyimport(modelname)[:Model](length(V), "gpu")
     for i in 1:epoch
         loss = @time train(model, data, 1000, min(20+i, 64))
         println("\n=== epoch $i, loss: $loss ===")
         predict(model, V)
         try
-            model[:save]("D:/xi-presentation/model/$model.model")
+            model[:save]("D:/xi-presentation/model/$modelname.model")
         end
     end
 end
